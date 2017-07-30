@@ -1,0 +1,25 @@
+{
+  "presets": [
+    ["env", {
+      "targets": {
+        "node": "current"
+      }
+    }]
+  ],
+  "env": {
+    "production": {
+      "plugins": [
+        "transform-runtime",
+        "babel-plugin-inject",
+        "transform-es2015-modules-commonjs"
+      ]
+    },
+    "test": {
+      "plugins": [
+        "istanbul",
+        "rewire",
+        "transform-es2015-modules-commonjs"
+      ]
+    }
+  }
+}
