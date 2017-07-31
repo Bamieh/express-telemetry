@@ -1,4 +1,3 @@
-"use strict";
 import os from 'os'
 
 export const numCpus = () => os.cpus().length;
