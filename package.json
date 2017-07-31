@@ -46,5 +46,8 @@
     "nyc": "^11.0.2",
     "sinon": "^2.3.5",
     "supertest": "^3.0.0"
+  },
+  "dependencies": {
+    "sleep": "^5.1.1"
   }
 }

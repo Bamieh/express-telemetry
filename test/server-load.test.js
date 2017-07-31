@@ -1,30 +1,33 @@
 import express from 'express'
-import onLoadChangeTrigger from '../src/server-load'
+import serverLoadMiddleware from '../src/server-load'
 import supertest from 'supertest'
 import mockRoute, {resData} from './fixture/mock-route'
 
+import sleep from 'sleep';
+
+
 describe("Telemetry:: server-load-trigger", function() {
+  let eventLoopDelay;
+  let highServerLoad;
+
   before(function() {
-    this.isDelayed;
-    this.onLoadChange = chai.spy((isDelayed, req, res) => {
-      this.isDelayed = isDelayed;
-    })
+
     const app = express();
-    var route = express.Router();
-    route.get('*', function (req, res) {
-      res.json(resData);
-    });
+    const route = express.Router();
+    app.use(serverLoadMiddleware())
 
     app.use('/test', route);
 
-
-    app.use(onLoadChangeTrigger())
+    route.get('*', (req, res) => {
+      eventLoopDelay = req.eventLoopDelay;
+      highServerLoad = req.highServerLoad;
+      res.json(resData);
+    });
 
     this.request = supertest(app);
   })
-  it("throws if no onLoadChange function is passed", function() {
-    expect(onLoadChangeTrigger).to.throw();
-  })
+  it("accepts `delayThresholdMS` option")
+
   it("does not interrupt the response", function(done) {
     this.request.get('/test').expect(200, (err, res) => {
       expect(res.status).to.equal(200);
@@ -32,18 +35,25 @@ describe("Telemetry:: server-load-trigger", function() {
       done();
     })
   })
-  it("onLoadChange is called on first request", function() {
-    expect(this.onLoadChange).to.be.called.once;
-  })
-  it.skip("onLoadChange passes `isDelayed, req, res` params", function() {
-    expect(this.onLoadChange).to.have.been.called.with(Boolean, Object, Object);
-  });
-  it("sets isDelayed to true on server load", function(done) {
-    let numberOfTicks = 1e7;
-    while(numberOfTicks) { numberOfTicks-- }
+
+  it("sets `req.highServerLoad` to false on normal server load", function(done) {
     this.request.get('/test').expect(200, (err, res) => {
-      expect(this.isDelayed).to.be.true;
+      expect(highServerLoad).to.be.false;
       done();
     })
   })
+
+  it.skip("sets `req.highServerLoad` to true on high server load", function(done) {
+    this.request.get('/test').expect(200, (err, res) => {
+      expect(highServerLoad).to.be.true;
+      done();
+    })
+  })
+  it("sets `req.eventLoopDelay` to delay in ms", function(done) {
+    this.request.get('/test').expect(200, (err, res) => {
+      expect(eventLoopDelay).to.be.a("number");
+      done();
+    })
+  })
+
 })

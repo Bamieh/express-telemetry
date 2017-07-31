@@ -1,29 +1,36 @@
 const NS_PER_MS = 1e6;
 let eventLoopDelay = [0, 0];
 
+import {convertToMs} from './utils/hrtime-ms'
+
 function measureEventLoopDelay() {
   var interval = 500;
   var interval = setInterval(() => {
       const last = process.hrtime();
       setImmediate(() => {
           eventLoopDelay = process.hrtime(last);
-          // console.log('eventloop tick!')
       });
   }, interval);
   return interval;
 }
 
 
+const defaultOptions = {
+  delayThresholdMS: 20,
+}
 
-export default function factory(onChange, eventLoopDelayThresholdMS=40) {
-  const eventLoopDelayThresholdNS = NS_PER_MS * eventLoopDelayThresholdMS;
+export default function serverLoadMiddlewareRegistrar(options) {
+  const {
+    delayThresholdMS
+  } = Object.assign({}, defaultOptions, options);
+
   const eventLoopTicker = measureEventLoopDelay();
 
-  return function(req, res, next) {
-    const eventLoopDelayNS = eventLoopDelay[0] * NS_PER_SEC + eventLoopDelay[1];
+  return function serverLoadMiddleware(req, res, next) {
+    const eventLoopDelayMS = convertToMs(eventLoopDelay);
 
-    req.eventLoopDelay = eventLoopDelayNS;
-    req.highServerLoad = eventLoopDelayThresholdNS > eventLoopDelayNS;
+    req.eventLoopDelay = eventLoopDelayMS;
+    req.highServerLoad = eventLoopDelayMS > delayThresholdMS;
 
     next()
   }
