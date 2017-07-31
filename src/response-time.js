@@ -44,8 +44,8 @@ export default function(options) {
 
 
 function createSetHeader (options) {
-  const digits = typeof options.digits === "number" ? options.digits : 3
-  const header = options.header || 'X-Response-Time'
+  const digits = typeof options.headerDigits === "number" ? options.headerDigits : 3
+  const header = options.headerName || 'X-Response-Time'
 
   // display suffix
   var suffix = options.suffix;

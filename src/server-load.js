@@ -1,4 +1,3 @@
-const NS_PER_MS = 1e6;
 let eventLoopDelay = [0, 0];
 
 import {convertToMs} from './utils/hrtime-ms'
