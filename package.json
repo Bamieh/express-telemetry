@@ -1,6 +1,6 @@
 {
-  "name": "rocket-express-telemetry",
-  "version": "0.0.1",
+  "name": "express-telemetry-middleware",
+  "version": "0.0.2",
   "description": "Rocket Express Telemetry",
   "main": "lib/index.js",
   "author": "Ahmad Bamieh",
@@ -23,7 +23,10 @@
     "node": "7.10.0",
     "npm": ">=3.10"
   },
-  "repository": "Bamieh/express-telemetry",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Bamieh/express-telemetry.git"
+  },
   "peerDependencies": {
     "express": "~4.0"
   },
@@ -50,5 +53,21 @@
   "dependencies": {
     "on-headers": "^1.0.1",
     "sleep": "^5.1.1"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/Bamieh/express-telemetry/issues"
+  },
+  "homepage": "https://github.com/Bamieh/express-telemetry#readme",
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [
+    "express",
+    "middleware",
+    "telemetry",
+    "high-load",
+    "memory",
+    "monitoring",
+    "response-time"
+  ]
 }
