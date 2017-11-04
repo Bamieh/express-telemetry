@@ -42,12 +42,12 @@
     "babel-register": "^6.24.1",
     "chai": "^4.0.2",
     "chai-spies": "^0.7.1",
-    "coveralls": "^2.13.1",
+    "coveralls": "^3.0.0",
     "cross-env": "^5.0.0",
     "express": "^4.15.3",
-    "mocha": "^3.4.2",
+    "mocha": "^4.0.1",
     "nyc": "^11.0.2",
-    "sinon": "^2.3.5",
+    "sinon": "^4.1.1",
     "supertest": "^3.0.0"
   },
   "dependencies": {
