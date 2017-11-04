@@ -4,6 +4,8 @@
 
 # Express Telemetry
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/Bamieh/express-telemetry.svg)](https://greenkeeper.io/)
+
 - Express Middleware
 - Triggers
   - on high server load (long delays in the eventLoop)
